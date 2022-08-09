@@ -14,12 +14,13 @@ type loginBiz struct {
 	repos LoginRepos
 }
 
-func NewLoginBiz(repos LoginRepos) *loginBiz {
+func NewLoginBiz(ctx appcontext.AppContext) *loginBiz {
+	repos := authrepos.NewUserFind(ctx)
 	return &loginBiz{
 		repos: repos,
 	}
 }
 
-func UserLogin(ctx appcontext.AppContext, userName string, password string) (*usermodels.UserEntity, error) {
-	return authrepos.Login(ctx, userName, password)
+func (biz *loginBiz) UserLogin(ctx appcontext.AppContext, userName string, password string) (*usermodels.UserEntity, error) {
+	return biz.repos.Login(ctx, userName, password)
 }

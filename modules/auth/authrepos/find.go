@@ -7,7 +7,17 @@ import (
 	"template/modules/users/usermodels"
 )
 
-func Login(ctx appcontext.AppContext, userName string, password string) (*usermodels.UserEntity, error) {
+type UserFind struct {
+	ctx appcontext.AppContext
+}
+
+func NewUserFind(ctx appcontext.AppContext) *UserFind {
+	return &UserFind{
+		ctx: ctx,
+	}
+}
+
+func (f *UserFind) Login(ctx appcontext.AppContext, userName string, password string) (*usermodels.UserEntity, error) {
 	if userName == "admin" && password == "123456" {
 		return &usermodels.UserEntity{
 			BaseModel: databases.BaseModel{ID: "uuid.UUID{}.Get()"},

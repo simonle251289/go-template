@@ -17,7 +17,8 @@ func Login(ctx appcontext.AppContext) gin.HandlerFunc {
 				"error": "Missing require field",
 			})
 		}
-		user, err := authbiz.UserLogin(ctx, data.UserName, data.Password)
+		biz := authbiz.NewLoginBiz(ctx)
+		user, err := biz.UserLogin(ctx, data.UserName, data.Password)
 		if err != nil {
 			context.JSON(http.StatusNotFound, gin.H{
 				"error": err.Error(),

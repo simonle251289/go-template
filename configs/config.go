@@ -15,7 +15,7 @@ type Config struct {
 			Driver   string `yaml:"driver"`
 			Host     string `yaml:"host"`
 			Port     int    `yaml:"port"`
-			Database string `yaml:"databases"`
+			Database string `yaml:"database"`
 			User     string `yaml:"user"`
 			Password string `yaml:"password"`
 		}
@@ -24,7 +24,7 @@ type Config struct {
 
 func LoadConfig() Config {
 	wd, _ := os.Getwd()
-	file, err := ioutil.ReadFile(wd + "/configs/configuration.yaml")
+	file, err := ioutil.ReadFile(wd + "/configs/template.yaml")
 	if err != nil {
 		log.Fatalln(err)
 	}
