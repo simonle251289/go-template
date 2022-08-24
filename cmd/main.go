@@ -3,21 +3,35 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
 	"strconv"
 	"template/components/appcontext"
 	"template/configs"
 	"template/middleware"
 	"template/modules/auth"
+	"template/modules/users"
+	"template/utils/app_errors"
 )
 
 func main() {
-	r := gin.Default()
-	r.Use(middleware.Default())
 	config := configs.LoadConfig()
 	appCtx := appcontext.NewAppContext(&config)
-	//Register route
-	auth.RegisterAuthRoute(appCtx, r)
+	//
+	r := gin.Default()
+	r.Use(middleware.Default())
+	r.Use(middleware.ErrorHandler(appCtx))
+	BindRouter(appCtx, r)
 	if err := r.Run("127.0.0.1:" + strconv.Itoa(config.Port)); err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func BindRouter(ctx appcontext.AppContext, engine *gin.Engine) {
+	//Register route
+	auth.RegisterAuthRoute(ctx, engine)
+	users.RegisterUserRouter(ctx, engine)
+	//define no route
+	engine.NoRoute(func(ctx *gin.Context) {
+		panic(app_errors.NewError(nil, http.StatusNotFound, app_errors.InvalidUrl))
+	})
 }

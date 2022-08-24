@@ -15,3 +15,5 @@
 - Go configs/template.yaml change portgres config
 - Press run button or run `go run cmd/main.go` at terminal
 - Finally, make request with http://127.0.0.1:8080/auth/login method POST & Header Content-Type=application/json & Body `{"username":"admin", "password": "123456"}`
+### RSA
+- Generate RSA key `openssl genrsa -out rsa.pem 4096 and openssl rsa -in rsa.pem -pubout -out rsa.pub` 

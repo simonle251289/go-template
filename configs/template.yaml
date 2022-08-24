@@ -1,10 +1,10 @@
-port: 8080
+port: 3000
 debug: true
 #Databse configs
 database:
   postgres:
     driver: postgres
-    database: database_name
+    database: test
     host: 127.0.0.1
     port: 2345
     user: postgres
@@ -16,3 +16,6 @@ database:
     port: 3307
     user: postgres
     password: postgres
+jwt:
+  accessTTL: 86400
+  refreshTTL: 864000

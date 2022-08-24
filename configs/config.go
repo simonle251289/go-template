@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"template/utils"
 )
 
 type Config struct {
@@ -20,6 +21,14 @@ type Config struct {
 			Password string `yaml:"password"`
 		}
 	}
+	JWT struct {
+		AccessTTL  int `yaml:"accessTTL"`
+		RefreshTTL int `yaml:"refreshTTL"`
+	}
+	RSAPrivateKey        string
+	RSAPublicKey         string
+	RSARefreshPrivateKey string
+	RSARefreshPublicKey  string
 }
 
 func LoadConfig() Config {
@@ -33,5 +42,9 @@ func LoadConfig() Config {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	config.RSAPrivateKey = utils.LoadFileString("/configs/rsa.pem")
+	config.RSAPublicKey = utils.LoadFileString("/configs/rsa.pub")
+	config.RSARefreshPrivateKey = utils.LoadFileString("/configs/rsa-refresh.pem")
+	config.RSARefreshPublicKey = utils.LoadFileString("/configs/rsa-refresh.pub")
 	return config
 }
