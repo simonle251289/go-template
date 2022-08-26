@@ -21,12 +21,18 @@ func main() {
 	r.Use(middleware.Default())
 	r.Use(middleware.ErrorHandler(appCtx))
 	BindRouter(appCtx, r)
-	if err := r.Run("127.0.0.1:" + strconv.Itoa(config.Port)); err != nil {
+	if err := r.Run(":" + strconv.Itoa(config.Port)); err != nil {
 		log.Fatalln(err)
 	}
 }
 
 func BindRouter(ctx appcontext.AppContext, engine *gin.Engine) {
+	//Kubernetes health check
+	engine.GET("/health", func(context *gin.Context) {
+		context.JSON(http.StatusOK, gin.H{
+			"message": "OK",
+		})
+	})
 	//Register route
 	auth.RegisterAuthRoute(ctx, engine)
 	users.RegisterUserRouter(ctx, engine)
